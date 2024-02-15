@@ -1,20 +1,59 @@
-// TODO: Create a function that returns a license badge based on which license is passed in
-// If there is no license, return an empty string
-function renderLicenseBadge(license) {}
-
-// TODO: Create a function that returns the license link
-// If there is no license, return an empty string
-function renderLicenseLink(license) {}
-
-// TODO: Create a function that returns the license section of README
-// If there is no license, return an empty string
-function renderLicenseSection(license) {}
-
-// TODO: Create a function to generate markdown for README
-function generateMarkdown(data) {
-  return `# ${data.title}
-
-`;
+function renderLicenseSection(license) {
+  if (license === "none") {
+    return `![Github license](https://img.shields.io/badge/no-license-blue.svg)\r\n \r\n
+    No license added.`;
+  } else {
+    return `![Github license](https://img.shields.io/badge/${license}-blue.svg)\r\n \r\n Licensing: [${license}](https://choosealicense.com/licenses/${license}/)`;
+  }
 }
-
-module.exports = generateMarkdown;
+class Generator {
+  constructor(data) {
+    this.data = data;
+  }
+  generateMarkdown(data) {
+    return `
+    # ${data.title}
+    ${renderLicenseSection(data.license)}
+    
+    ## Table of Contents
+  
+    - [Description](#description)
+    - [Installation](#installation-requirements)
+    - [Usage](#application-usage)
+    - [License](#licensing-information)
+    - [Contributions](#contributions)
+    - [Tests](#tests-commands)
+    - [Video Link](#link-to-video-instructions)
+    - [Screenshot](#screenshot)
+    - [Questions](#questions)
+  
+    ## Description
+    ${data.description}
+  
+    ## Installation Requirements
+    ${data.installation}
+  
+    ## Application Usage
+    ${data.usage}
+    
+    ## Contributions
+    ${data.contributions}
+  
+    ## Test Commands
+    ${data.tests}
+  
+    ## Link to Video Instructions
+    ${data.video}
+  
+    ## Screenshot
+    ![screenshot of application](${data.screenshot})
+  
+    ## Questions
+    For Questions, contact me at ${data.email} or visit My Github: [${
+      data.github
+    }](https://github.com/${data.github})
+  
+  `;
+  }
+}
+module.exports = { Generator };

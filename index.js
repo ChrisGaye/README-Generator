@@ -1,42 +1,84 @@
-// TODO: Include packages needed for this application
-import generateMarkdown from "./utils/generateMarkdown";
-import fs from "fs";
-import inquirer from "inquirer";
+const fs = require(`fs`);
+const path = require(`path`);
+const inquirer = require(`inquirer`);
+const {Generator} = require('./utils/generateMarkdown');
 
-// TODO: Create an array of questions for user input
 const questions = [
-    {
-        type: "input",
-        name: "title",
-        message: "What is the name of your project.",
-    },
-    {
-        type:"input",
-        name:"description",
-        message:"Give a description of your project please!",
-    },
-    {
-        type:"input",
-        name:"installation",
-        message:"What steps are required to install your project.",
-    },
-    {
-        type:"input",
-        name:"usage",
-        message:"Provide instructions and examples for the usage of your project.",
-    },
-    {
-        type:"input",
-        name:"credits",
-        message:"List collaborators, tutorials used, and third-party assets, if there are any.",
-    },
+  {
+    type: "input",
+    name: "title",
+    message: "Enter project title:",
+  },
+  {
+    type: "input",
+    name: "description",
+    message: "Enter description for project:",
+  },
+  {
+    type: "input",
+    name: "installation",
+    message: "Enter dependencies required for installation:",
+  },
+  {
+    type: "input",
+    name: "usage",
+    message: "Describe project usage:",
+  },
+  {
+    type: "list",
+    name: "license",
+    message: "Select license for project: \r\n choose wisely",
+    choices: [
+      "agpl-3.0",
+      "mpl-2.0",
+      "apache-2.0",
+      "mit",
+      "bsl-1.0",
+      "unlicense",
+      "none",
+    ],
+  },
+  {
+    type: "input",
+    name: "contributions",
+    message: "Enter project contributors:",
+  },
+  {
+    type: "input",
+    name: "tests",
+    message: "Enter commands for project testing:",
+  },
+  {
+    type: "input",
+    name: "github",
+    message: "Enter GitHub username:",
+  },
+  {
+    type: "input",
+    name: "email",
+    message: "Enter email address:",
+  },
+  {
+    type: "input",
+    name: "video",
+    message: "Enter link to video:",
+  },
+  {
+    type: "input",
+    name: "screenshot",
+    message: "Enter path to screenshot(/...):",
+  },
 ];
 
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileName, data) {
+  return fs.writeFileSync(path.join(process.cwd(), fileName), data);
+}
 
-// TODO: Create a function to initialize app
-function init() {}
-
-// Function call to initialize app
+function init() {
+  inquirer.prompt(questions).then((responses) => {
+    const generator = new Generator(responses)
+    console.log(`README.md file Generated.`);
+    writeToFile("./dist/README.md", generator.generateMarkdown(responses));
+  });
+}
 init();
